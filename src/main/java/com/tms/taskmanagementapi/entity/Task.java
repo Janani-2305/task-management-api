@@ -1,0 +1,38 @@
+package com.tms.taskmanagementapi.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+public class Task extends BaseEntity implements Comparable<Task>{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private String description;
+    private Integer priority;
+    private boolean completed;
+    private String status;
+
+    @Override
+    public int compareTo(Task task) {
+
+        if(this.priority < task.getPriority()){
+            return -1;
+        }else if( this.priority > task.getPriority()){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+}
