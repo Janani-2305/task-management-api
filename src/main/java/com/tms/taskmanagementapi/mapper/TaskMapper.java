@@ -14,6 +14,8 @@ public class TaskMapper {
         taskDto.setPriority(task.getPriority());
         taskDto.setCompleted(task.isCompleted());
         taskDto.setStatus(task.getStatus());
+        taskDto.setTargetDate(task.getTargetDate());
+        taskDto.setCompletedOn(task.getCompletedOn());
         return taskDto;
     }
 

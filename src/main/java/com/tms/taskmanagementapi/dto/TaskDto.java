@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -30,5 +31,8 @@ public class TaskDto {
 
     @Schema(description = "Task Completion target date", example = "01/12/2024")
     private Date targetDate;
+
+    @Schema(description = "Task Completed on date", example = "2024-05-08 09:35:05.540854")
+    private LocalDateTime completedOn;
 
 }
