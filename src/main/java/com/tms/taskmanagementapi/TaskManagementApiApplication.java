@@ -1,6 +1,8 @@
 package com.tms.taskmanagementapi;
 
+import com.tms.taskmanagementapi.entity.Registration;
 import com.tms.taskmanagementapi.entity.Task;
+import com.tms.taskmanagementapi.repository.RegistrationRepository;
 import com.tms.taskmanagementapi.repository.TaskRepository;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -39,6 +41,9 @@ public class TaskManagementApiApplication implements CommandLineRunner {
 	@Autowired
 	private TaskRepository taskRepository;
 
+	@Autowired
+	private RegistrationRepository registrationRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(TaskManagementApiApplication.class, args);
 	}
@@ -53,5 +58,7 @@ public class TaskManagementApiApplication implements CommandLineRunner {
 				.collect(Collectors.toList());
 
 		taskRepository.saveAll(tasks);
+
+		registrationRepository.save(new Registration(1L, "Janani", "janani@gmail.com", "Abcd@123", "Abcd@123"));
 	}
 }

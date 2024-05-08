@@ -1,6 +1,6 @@
 package com.tms.taskmanagementapi.service;
 
-import com.tms.taskmanagementapi.constants.TaskConstants;
+import com.tms.taskmanagementapi.constants.GlobalConstants;
 import com.tms.taskmanagementapi.dto.ResponseDto;
 import com.tms.taskmanagementapi.dto.TaskDto;
 import com.tms.taskmanagementapi.entity.Task;
@@ -26,22 +26,23 @@ public class TaskService {
         Task task = TaskMapper.mapToTask(taskDto);
         taskRepository.save(task);
         return ResponseMapper
-                .mapToResponseDto(HttpStatus.CREATED, TaskConstants.MESSAGE_201);
+                .mapToResponseDto(HttpStatus.CREATED, GlobalConstants.MESSAGE_201);
     }
 
     public ResponseDto updateTask(TaskDto taskDto, Long id){
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(TaskConstants.EXCEPTION_MESSAGE_TASK_NOT_FOUND, id)));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(GlobalConstants.EXCEPTION_MESSAGE_NOT_FOUND, id)));
 
         Task taskUpdated = TaskMapper.mapToTask(task, taskDto);
         taskRepository.save(taskUpdated);
         return ResponseMapper
-                .mapToResponseDto(HttpStatus.OK, TaskConstants.MESSAGE_200);
+                .mapToResponseDto(HttpStatus.OK, GlobalConstants.MESSAGE_200);
     }
 
     public List<Task> getAllTasks(String status) {
         List<Task> tasks = taskRepository.findAll();
-        return getTasks(tasks, status);
+        //return getTasks(tasks, status);
+        return tasks;
     }
 
     private List<Task> getTasks(List<Task> tasks, String status) {
@@ -59,7 +60,7 @@ public class TaskService {
 
     public Task getTaskById(Long id) {
         return taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(TaskConstants.EXCEPTION_MESSAGE_TASK_NOT_FOUND, id)));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(GlobalConstants.EXCEPTION_MESSAGE_NOT_FOUND, id)));
     }
 
     public void deleteTask(Long id) {
