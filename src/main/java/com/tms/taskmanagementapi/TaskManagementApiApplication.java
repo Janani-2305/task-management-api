@@ -34,7 +34,6 @@ import java.util.stream.Stream;
 		)
 )
 @SpringBootApplication
-@CrossOrigin("*")
 public class TaskManagementApiApplication implements CommandLineRunner {
 
 	@Autowired
