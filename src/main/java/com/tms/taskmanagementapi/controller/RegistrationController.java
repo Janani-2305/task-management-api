@@ -35,4 +35,16 @@ public class RegistrationController {
         ResponseDto responseDto = registrationService.updateUser(registrationDto, email);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
+
+    @PostMapping("/validate-userName")
+    public ResponseEntity<ResponseDto> validateUserName(@RequestBody String email){
+        ResponseDto responseDto = registrationService.validateUserName(email);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/update-password")
+    public ResponseEntity<ResponseDto> updatePassword(@RequestBody RegistrationDto registrationDto){
+        ResponseDto responseDto = registrationService.updatePassword(registrationDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 }

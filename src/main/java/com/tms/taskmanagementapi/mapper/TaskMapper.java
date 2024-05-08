@@ -29,6 +29,8 @@ public class TaskMapper {
         task.setTargetDate(taskDto.getTargetDate());
         if(taskDto.isCompleted()){
             task.setCompletedOn(LocalDateTime.now());
+        }else{
+            task.setCompletedOn(null);
         }
         return task;
     }
@@ -37,6 +39,8 @@ public class TaskMapper {
 
         if(taskDto.isCompleted()){
             task.setCompletedOn(LocalDateTime.now());
+        }else{
+            task.setCompletedOn(null);
         }
         task.setCompleted(taskDto.isCompleted());
         task.setStatus(taskDto.getStatus());

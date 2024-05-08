@@ -24,10 +24,23 @@ public class RegistrationMapper {
     }
 
     public static Registration mapToRegistration(RegistrationDto registrationDto, Registration registration){
-        registration.setName(registrationDto.getName());
-        registration.setEmail(registrationDto.getEmail());
-        registration.setPassword(registrationDto.getPassword());
-        registration.setConfirmPassword(registrationDto.getConfirmPassword());
+
+        if (registrationDto.getName() != null && !registrationDto.getName().isEmpty()) {
+            registration.setName(registrationDto.getName());
+        }
+
+        if (registrationDto.getEmail() != null && !registrationDto.getEmail().isEmpty()) {
+            registration.setEmail(registrationDto.getEmail());
+        }
+
+        if (registrationDto.getPassword() != null && !registrationDto.getPassword().isEmpty()) {
+            registration.setPassword(registrationDto.getPassword());
+        }
+
+        if (registrationDto.getConfirmPassword() != null && !registrationDto.getConfirmPassword().isEmpty()) {
+            registration.setConfirmPassword(registrationDto.getConfirmPassword());
+        }
+
         return registration;
     }
 

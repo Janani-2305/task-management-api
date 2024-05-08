@@ -42,4 +42,20 @@ public class RegistrationService {
                 .mapToResponseDto(HttpStatus.OK, GlobalConstants.MESSAGE_200);
     }
 
+    public ResponseDto validateUserName(String email){
+        Registration registration = registrationRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(GlobalConstants.EXCEPTION_MESSAGE_NOT_FOUND, email)));
+        return ResponseMapper
+                .mapToResponseDto(HttpStatus.OK, GlobalConstants.MESSAGE_200);
+    }
+
+    public ResponseDto updatePassword(RegistrationDto registrationDto){
+        Registration registration = registrationRepository.findByEmail(registrationDto.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(GlobalConstants.EXCEPTION_MESSAGE_NOT_FOUND, registrationDto.getEmail())));
+        Registration registrationUpdated = RegistrationMapper.mapToRegistration(registrationDto, registration);
+        registrationRepository.save(registrationUpdated);
+        return ResponseMapper
+                .mapToResponseDto(HttpStatus.OK, GlobalConstants.MESSAGE_200);
+    }
+
 }
