@@ -6,6 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
@@ -23,6 +26,8 @@ public class Task extends BaseEntity implements Comparable<Task>{
     private Integer priority;
     private boolean completed;
     private String status;
+    private LocalDateTime completedOn;
+    private Date targetDate;
 
     @Override
     public int compareTo(Task task) {

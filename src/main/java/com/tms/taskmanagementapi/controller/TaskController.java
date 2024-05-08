@@ -80,4 +80,9 @@ public class TaskController {
         return new ResponseEntity<>(taskService.searchByName(searchString, status), HttpStatus.OK);
     }
 
+    @PatchMapping("/task/{id}")
+    public ResponseEntity<ResponseDto> updateStatus(@PathVariable Long id, @RequestBody TaskDto taskDto){
+        return new ResponseEntity<>(taskService.updateTask(taskDto, id), HttpStatus.OK);
+    }
+
 }

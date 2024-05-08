@@ -29,6 +29,16 @@ public class TaskService {
                 .mapToResponseDto(HttpStatus.CREATED, TaskConstants.MESSAGE_201);
     }
 
+    public ResponseDto updateTask(TaskDto taskDto, Long id){
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(TaskConstants.EXCEPTION_MESSAGE_TASK_NOT_FOUND, id)));
+
+        Task taskUpdated = TaskMapper.mapToTask(task, taskDto);
+        taskRepository.save(taskUpdated);
+        return ResponseMapper
+                .mapToResponseDto(HttpStatus.OK, TaskConstants.MESSAGE_200);
+    }
+
     public List<Task> getAllTasks(String status) {
         List<Task> tasks = taskRepository.findAll();
         return getTasks(tasks, status);

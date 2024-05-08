@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @ToString
@@ -25,5 +27,8 @@ public class TaskDto {
 
     @Schema(description = "Task Completion status", example = "Pending")
     private String status;
+
+    @Schema(description = "Task Completion target date", example = "01/12/2024")
+    private Date targetDate;
 
 }

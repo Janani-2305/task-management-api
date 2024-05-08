@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,6 +34,7 @@ import java.util.stream.Stream;
 		)
 )
 @SpringBootApplication
+@CrossOrigin("*")
 public class TaskManagementApiApplication implements CommandLineRunner {
 
 	@Autowired
@@ -42,11 +46,11 @@ public class TaskManagementApiApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		List<Task> tasks = Stream.of(new Task(1L, "Task Name", "Task Description", 5, false, "Pending"),
-						new Task(2L, "Task Name2", "Task Description2", 1, false, "Pending"),
-						new Task(3L, "Task Name3", "Task Description3", 10, true, "Completed"),
-						new Task(4L, "Thermal1", "Task Description2", 1, false, "Pending"),
-						new Task(5L, "Maths2", "Task Description2", 1, false, "Pending"))
+		List<Task> tasks = Stream.of(new Task(1L, "Task Name", "Task Description", 5, false, "Pending",null, new Date("31/05/2024")),
+						new Task(2L, "Task Name2", "Task Description2", 1, false, "Pending", null, new Date("31/05/2024")),
+						new Task(3L, "Task Name3", "Task Description3", 10, true, "Completed", null, new Date("31/05/2024")),
+						new Task(4L, "Thermal1", "Task Description2", 1, false, "Pending", null, new Date("31/05/2024")),
+						new Task(5L, "Maths2", "Task Description2", 1, false, "Pending", null, new Date("31/05/2024")))
 				.collect(Collectors.toList());
 
 		taskRepository.saveAll(tasks);

@@ -3,6 +3,8 @@ package com.tms.taskmanagementapi.mapper;
 import com.tms.taskmanagementapi.dto.TaskDto;
 import com.tms.taskmanagementapi.entity.Task;
 
+import java.time.LocalDateTime;
+
 public class TaskMapper {
 
     public static TaskDto mapToTaskDto(Task task){
@@ -22,6 +24,21 @@ public class TaskMapper {
         task.setPriority(taskDto.getPriority());
         task.setCompleted(taskDto.isCompleted());
         task.setStatus(taskDto.getStatus());
+        task.setTargetDate(taskDto.getTargetDate());
+        if(taskDto.isCompleted()){
+            task.setCompletedOn(LocalDateTime.now());
+        }
+        return task;
+    }
+
+    public static Task mapToTask(Task task, TaskDto taskDto){
+
+        if(taskDto.isCompleted()){
+            task.setCompletedOn(LocalDateTime.now());
+        }
+        task.setCompleted(taskDto.isCompleted());
+        task.setStatus(taskDto.getStatus());
+
         return task;
     }
 
