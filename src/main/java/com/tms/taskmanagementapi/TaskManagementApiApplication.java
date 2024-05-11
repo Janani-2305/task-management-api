@@ -57,7 +57,7 @@ public class TaskManagementApiApplication implements CommandLineRunner {
 						new Task(5L, "Maths2", "Task Description2", 1, false, "Pending", null, new Date("31/05/2024")))
 				.collect(Collectors.toList());
 
-		taskRepository.saveAll(tasks);
+		//taskRepository.saveAll(tasks);
 
 		registrationRepository.save(new Registration(1L, "Janani", "janani@gmail.com", "Abcd@123", "Abcd@123"));
 	}
