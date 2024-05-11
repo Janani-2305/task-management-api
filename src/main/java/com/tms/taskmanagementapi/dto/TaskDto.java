@@ -35,4 +35,6 @@ public class TaskDto {
     @Schema(description = "Task Completed on date", example = "2024-05-08 09:35:05.540854")
     private LocalDateTime completedOn;
 
+    @Schema(description = "owner of the task", example = "5")
+    private Long userId;
 }

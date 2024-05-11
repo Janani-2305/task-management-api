@@ -21,6 +21,7 @@ public class TaskMapper {
         taskDto.setStatus(task.getStatus());
         taskDto.setTargetDate(task.getTargetDate());
         taskDto.setCompletedOn(task.getCompletedOn());
+        taskDto.setUserId(task.getUserId());
         return taskDto;
     }
 

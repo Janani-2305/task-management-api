@@ -16,3 +16,8 @@ spring:
 
   application:
     name: TASK-MANAGEMENT-API
+
+  security:
+    cors:
+      allowCredentials: true
+      exposedHeaders: Authorization

@@ -26,6 +26,15 @@ public class SecurityConfig {
     @Autowired
     private JwtTokenAuthFilter jwtTokenAuthFilter;
 
+    private static final String[] AUTH_WHITELIST = {
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/api/v1/user/register",
+            "/api/v1/authentication/login",
+            "/api/v1/user/validate-username",
+            "/api/v1/user/update-password"
+    };
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new TmsUserDetailsService();
@@ -42,8 +51,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/v1/user/register", "/api/v1/authentication/login").permitAll()
-                        .requestMatchers("/api/v1/user/validate-username", "/api/v1/user/update-password").permitAll()
+                        .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest()
                         .authenticated())
                 .httpBasic(Customizer.withDefaults())

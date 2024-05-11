@@ -43,11 +43,12 @@ public class TaskService {
                 .mapToResponseDto(HttpStatus.OK, GlobalConstants.MESSAGE_200);
     }
 
-    public List<Task> getAllTasks(String status) {
+    public List<TaskDto> getAllTasks(String status) {
 
-
-        List<Task> tasks = taskRepository.findAll();
-        //return getTasks(tasks, status);
+        List<TaskDto> tasks = taskRepository.findAll()
+                .stream()
+                .map(task -> taskMapper.mapToTaskDto(task))
+                .collect(Collectors.toList());
 
         return tasks;
     }
@@ -74,10 +75,17 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    public List<Task> searchByName(String searchString, String status) {
+    public List<TaskDto> searchByName(String searchString) {
         List<Task> tasks = taskRepository.findByNameContaining(searchString);
 
-        return getTasks(tasks, status);
+        if(tasks.isEmpty()){
+            throw new ResourceNotFoundException("There is no Resource found for the give search key "+ searchString);
+        }
+
+        return taskRepository.findByNameContaining(searchString)
+                .stream()
+                .map(task -> taskMapper.mapToTaskDto(task))
+                .collect(Collectors.toList());
     }
 
 
