@@ -2,19 +2,26 @@ package com.tms.taskmanagementapi.mapper;
 
 import com.tms.taskmanagementapi.dto.RegistrationDto;
 import com.tms.taskmanagementapi.entity.Registration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RegistrationMapper {
 
-    public static Registration mapToRegistration(RegistrationDto registrationDto){
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public Registration mapToRegistration(RegistrationDto registrationDto){
         Registration registration = new Registration();
         registration.setName(registrationDto.getName());
         registration.setEmail(registrationDto.getEmail());
-        registration.setPassword(registrationDto.getPassword());
-        registration.setConfirmPassword(registrationDto.getConfirmPassword());
+        registration.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+        registration.setConfirmPassword(passwordEncoder.encode(registrationDto.getConfirmPassword()));
         return registration;
     }
 
-    public static RegistrationDto mapToRegistrationDto(Registration registration){
+    public RegistrationDto mapToRegistrationDto(Registration registration){
         RegistrationDto registrationDto = new RegistrationDto();
         registrationDto.setEmail(registration.getEmail());
         registrationDto.setPassword(registration.getPassword());
@@ -23,7 +30,7 @@ public class RegistrationMapper {
         return registrationDto;
     }
 
-    public static Registration mapToRegistration(RegistrationDto registrationDto, Registration registration){
+    public Registration mapToRegistration(RegistrationDto registrationDto, Registration registration){
 
         if (registrationDto.getName() != null && !registrationDto.getName().isEmpty()) {
             registration.setName(registrationDto.getName());
@@ -34,11 +41,11 @@ public class RegistrationMapper {
         }
 
         if (registrationDto.getPassword() != null && !registrationDto.getPassword().isEmpty()) {
-            registration.setPassword(registrationDto.getPassword());
+            registration.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         }
 
         if (registrationDto.getConfirmPassword() != null && !registrationDto.getConfirmPassword().isEmpty()) {
-            registration.setConfirmPassword(registrationDto.getConfirmPassword());
+            registration.setConfirmPassword(passwordEncoder.encode(registrationDto.getConfirmPassword()));
         }
 
         return registration;

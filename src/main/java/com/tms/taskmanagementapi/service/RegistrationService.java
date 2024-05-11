@@ -18,9 +18,12 @@ public class RegistrationService {
     @Autowired
     private RegistrationRepository registrationRepository;
 
+    @Autowired
+    private RegistrationMapper registrationMapper;
+
     public ResponseDto saveUser(RegistrationDto registrationDto){
 
-        Registration registration = RegistrationMapper.mapToRegistration(registrationDto);
+        Registration registration = registrationMapper.mapToRegistration(registrationDto);
         registrationRepository.save(registration);
         return ResponseMapper
                 .mapToResponseDto(HttpStatus.CREATED, GlobalConstants.MESSAGE_201);
@@ -30,13 +33,13 @@ public class RegistrationService {
 
         Registration registration = registrationRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(GlobalConstants.EXCEPTION_MESSAGE_NOT_FOUND, email)));
-        return RegistrationMapper.mapToRegistrationDto(registration);
+        return registrationMapper.mapToRegistrationDto(registration);
     }
 
     public ResponseDto updateUser(RegistrationDto registrationDto, String email){
         Registration registration = registrationRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(GlobalConstants.EXCEPTION_MESSAGE_NOT_FOUND, email)));
-        Registration registrationUpdated = RegistrationMapper.mapToRegistration(registrationDto, registration);
+        Registration registrationUpdated = registrationMapper.mapToRegistration(registrationDto, registration);
         registrationRepository.save(registrationUpdated);
         return ResponseMapper
                 .mapToResponseDto(HttpStatus.OK, GlobalConstants.MESSAGE_200);
@@ -52,7 +55,7 @@ public class RegistrationService {
     public ResponseDto updatePassword(RegistrationDto registrationDto){
         Registration registration = registrationRepository.findByEmail(registrationDto.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(GlobalConstants.EXCEPTION_MESSAGE_NOT_FOUND, registrationDto.getEmail())));
-        Registration registrationUpdated = RegistrationMapper.mapToRegistration(registrationDto, registration);
+        Registration registrationUpdated = registrationMapper.mapToRegistration(registrationDto, registration);
         registrationRepository.save(registrationUpdated);
         return ResponseMapper
                 .mapToResponseDto(HttpStatus.OK, GlobalConstants.MESSAGE_200);

@@ -36,7 +36,7 @@ public class RegistrationController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
-    @PostMapping("/validate-userName")
+    @PostMapping("/validate-username")
     public ResponseEntity<ResponseDto> validateUserName(@RequestBody String email){
         ResponseDto responseDto = registrationService.validateUserName(email);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);

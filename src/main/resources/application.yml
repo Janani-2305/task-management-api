@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-circular-references: true
   datasource:
     url: jdbc:mysql://task-management-db.c9ys2ao8ofsg.ap-south-1.rds.amazonaws.com:3306/TaskManagementDB
     username: Janani1423
