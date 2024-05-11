@@ -10,6 +10,8 @@ import com.tms.taskmanagementapi.mapper.TaskMapper;
 import com.tms.taskmanagementapi.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +23,11 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
+    @Autowired
+    private TaskMapper taskMapper;
 
     public ResponseDto addTask(TaskDto taskDto) {
-        Task task = TaskMapper.mapToTask(taskDto);
+        Task task = taskMapper.mapToTask(taskDto);
         taskRepository.save(task);
         return ResponseMapper
                 .mapToResponseDto(HttpStatus.CREATED, GlobalConstants.MESSAGE_201);
@@ -33,15 +37,18 @@ public class TaskService {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(GlobalConstants.EXCEPTION_MESSAGE_NOT_FOUND, id)));
 
-        Task taskUpdated = TaskMapper.mapToTask(task, taskDto);
+        Task taskUpdated = taskMapper.mapToTask(task, taskDto);
         taskRepository.save(taskUpdated);
         return ResponseMapper
                 .mapToResponseDto(HttpStatus.OK, GlobalConstants.MESSAGE_200);
     }
 
     public List<Task> getAllTasks(String status) {
+
+
         List<Task> tasks = taskRepository.findAll();
         //return getTasks(tasks, status);
+
         return tasks;
     }
 

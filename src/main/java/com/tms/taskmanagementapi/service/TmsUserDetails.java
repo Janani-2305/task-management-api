@@ -10,11 +10,14 @@ public class TmsUserDetails implements UserDetails {
 
     private String userName;
     private String password;
+    private Long userId;
+    private String name;
 
     public TmsUserDetails(Registration registration) {
         this.userName = registration.getEmail();
         this.password = registration.getPassword();
-
+        this.userId = registration.getId();
+        this.name = registration.getName();
     }
 
     @Override
@@ -30,6 +33,13 @@ public class TmsUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return this.userName;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+    public Long getUserId(){
+        return this.userId;
     }
 
     @Override

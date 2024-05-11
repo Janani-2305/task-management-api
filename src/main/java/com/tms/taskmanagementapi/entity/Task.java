@@ -28,6 +28,7 @@ public class Task extends BaseEntity implements Comparable<Task>{
     private String status;
     private LocalDateTime completedOn;
     private Date targetDate;
+    private Long userId;
 
     @Override
     public int compareTo(Task task) {

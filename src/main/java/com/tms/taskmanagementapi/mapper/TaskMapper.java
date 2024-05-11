@@ -2,12 +2,17 @@ package com.tms.taskmanagementapi.mapper;
 
 import com.tms.taskmanagementapi.dto.TaskDto;
 import com.tms.taskmanagementapi.entity.Task;
+import com.tms.taskmanagementapi.service.TmsUserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+@Component
 public class TaskMapper {
 
-    public static TaskDto mapToTaskDto(Task task){
+    public TaskDto mapToTaskDto(Task task){
         TaskDto taskDto = new TaskDto();
         taskDto.setName(task.getName());
         taskDto.setDescription(task.getDescription());
@@ -19,7 +24,7 @@ public class TaskMapper {
         return taskDto;
     }
 
-    public static Task mapToTask(TaskDto taskDto){
+    public Task mapToTask(TaskDto taskDto){
         Task task = new Task();
         task.setName(taskDto.getName());
         task.setDescription(taskDto.getDescription());
@@ -27,6 +32,7 @@ public class TaskMapper {
         task.setCompleted(taskDto.isCompleted());
         task.setStatus(taskDto.getStatus());
         task.setTargetDate(taskDto.getTargetDate());
+        task.setUserId(getUserDetails().getUserId());
         if(taskDto.isCompleted()){
             task.setCompletedOn(LocalDateTime.now());
         }else{
@@ -35,7 +41,7 @@ public class TaskMapper {
         return task;
     }
 
-    public static Task mapToTask(Task task, TaskDto taskDto){
+    public Task mapToTask(Task task, TaskDto taskDto){
 
         if(taskDto.isCompleted()){
             task.setCompletedOn(LocalDateTime.now());
@@ -44,8 +50,14 @@ public class TaskMapper {
         }
         task.setCompleted(taskDto.isCompleted());
         task.setStatus(taskDto.getStatus());
+        task.setUserId(getUserDetails().getUserId());
 
         return task;
+    }
+
+    private TmsUserDetails getUserDetails(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (TmsUserDetails) authentication.getPrincipal();
     }
 
 }
