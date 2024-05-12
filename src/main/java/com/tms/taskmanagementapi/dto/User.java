@@ -5,7 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserId {
+public class User {
     public static Long userId;
+    public static String userName;
 
 }

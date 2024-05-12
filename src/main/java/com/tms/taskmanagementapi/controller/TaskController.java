@@ -11,9 +11,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "*")
+@Validated
 public class TaskController {
 
     @Autowired
@@ -40,9 +46,9 @@ public class TaskController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @GetMapping("/tasks")
-    public ResponseEntity<List<TaskDto>> getAllTasks(@RequestParam String status) {
+    public ResponseEntity<List<TaskDto>> getAllTasks() {
 
-        return new ResponseEntity<>(taskService.getAllTasks(status), HttpStatus.OK);
+        return new ResponseEntity<>(taskService.getAllTasks(), HttpStatus.OK);
     }
 
     @Operation(
@@ -55,7 +61,7 @@ public class TaskController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @PostMapping("/task")
-    public ResponseEntity<ResponseDto> addTask(@RequestBody TaskDto taskDto) {
+    public ResponseEntity<ResponseDto> addTask(@Valid  @RequestBody TaskDto taskDto) {
         return new ResponseEntity<>(taskService.addTask(taskDto), HttpStatus.CREATED);
     }
 
@@ -70,7 +76,11 @@ public class TaskController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @GetMapping("/task/{id}")
-    public ResponseEntity<Task> getTask(@PathVariable Long id) {
+    public ResponseEntity<Task> getTask(@PathVariable
+                                            @NotNull(message = "Id can't be null")
+                                            @NotEmpty(message = "Id can't be empty")
+                                            @Pattern(regexp = "[\\d]+")
+                                            Long id) {
         return new ResponseEntity<>(taskService.getTaskById(id), HttpStatus.OK);
     }
 
@@ -85,7 +95,11 @@ public class TaskController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @DeleteMapping("/task/{id}")
-    public ResponseEntity<Task> deleteTask(@PathVariable Long id) {
+    public ResponseEntity<Task> deleteTask(@PathVariable
+                                               @NotNull(message = "Id can't be null")
+                                               @NotEmpty(message = "Id can't be empty")
+                                               @Pattern(regexp = "[\\d]+")
+                                               Long id) {
         taskService.deleteTask(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -101,7 +115,7 @@ public class TaskController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @PutMapping("/task")
-    public ResponseEntity<ResponseDto> updateTask(@RequestBody TaskDto taskDto) {
+    public ResponseEntity<ResponseDto> updateTask(@Valid @RequestBody TaskDto taskDto) {
         return new ResponseEntity<>(taskService.addTask(taskDto), HttpStatus.OK);
     }
 
@@ -116,7 +130,10 @@ public class TaskController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @GetMapping("/task/search")
-    public ResponseEntity<List<TaskDto>> searchTask(@RequestParam String searchString) {
+    public ResponseEntity<List<TaskDto>> searchTask(@RequestParam
+                                                        @NotNull(message = "Search String can't be null")
+                                                        @NotEmpty(message = "Search String can't be empty")
+                                                        String searchString) {
         return new ResponseEntity<>(taskService.searchByName(searchString), HttpStatus.OK);
     }
 
@@ -131,7 +148,12 @@ public class TaskController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @PatchMapping("/task/{id}")
-    public ResponseEntity<ResponseDto> updateStatus(@PathVariable Long id, @RequestBody TaskDto taskDto) {
+    public ResponseEntity<ResponseDto> updateStatus(@Valid @RequestBody TaskDto taskDto,
+                                                    @PathVariable
+                                                    @NotNull(message = "Id can't be null")
+                                                    @NotEmpty(message = "Id can't be empty")
+                                                    @Pattern(regexp = "[\\d]+")
+                                                    Long id) {
         return new ResponseEntity<>(taskService.updateTask(taskDto, id), HttpStatus.OK);
     }
 

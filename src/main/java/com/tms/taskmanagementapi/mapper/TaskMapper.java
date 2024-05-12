@@ -1,11 +1,8 @@
 package com.tms.taskmanagementapi.mapper;
 
 import com.tms.taskmanagementapi.dto.TaskDto;
-import com.tms.taskmanagementapi.dto.UserId;
+import com.tms.taskmanagementapi.dto.User;
 import com.tms.taskmanagementapi.entity.Task;
-import com.tms.taskmanagementapi.service.TmsUserDetails;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -24,6 +21,10 @@ public class TaskMapper {
         taskDto.setCompletedOn(task.getCompletedOn());
         taskDto.setUserId(task.getUserId());
         taskDto.setId(task.getId());
+        taskDto.setCreatedAt(task.getCreatedAt());
+        taskDto.setCreatedBy(task.getCreatedBy());
+        taskDto.setUpdatedAt(task.getUpdatedAt());
+        taskDto.setUpdatedBy(task.getUpdatedBy());
         return taskDto;
     }
 
@@ -35,7 +36,7 @@ public class TaskMapper {
         task.setCompleted(taskDto.isCompleted());
         task.setStatus(taskDto.getStatus());
         task.setTargetDate(taskDto.getTargetDate());
-        task.setUserId(UserId.userId);
+        task.setUserId(User.userId);
         if(taskDto.isCompleted()){
             task.setCompletedOn(LocalDateTime.now());
         }else{
@@ -54,7 +55,7 @@ public class TaskMapper {
         }
         task.setCompleted(taskDto.isCompleted());
         task.setStatus(taskDto.getStatus());
-        task.setUserId(UserId.userId);
+        task.setUserId(User.userId);
 
         return task;
     }

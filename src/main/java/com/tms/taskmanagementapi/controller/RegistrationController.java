@@ -4,15 +4,20 @@ import com.tms.taskmanagementapi.dto.ErrorResponseDto;
 import com.tms.taskmanagementapi.dto.RegistrationDto;
 import com.tms.taskmanagementapi.dto.ResponseDto;
 import com.tms.taskmanagementapi.service.RegistrationService;
+import com.tms.taskmanagementapi.util.TmsUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(
@@ -22,10 +27,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/v1/user")
+@Validated
 public class RegistrationController {
 
     @Autowired
     private RegistrationService registrationService;
+
+    @Autowired
+    private TmsUtil tmsUtil;
+
 
     @Operation(
             summary = "Register the user",
@@ -37,8 +47,8 @@ public class RegistrationController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @PostMapping("/register")
-    public ResponseEntity<ResponseDto> registerUser(@RequestBody RegistrationDto registrationDto){
-
+    public ResponseEntity<ResponseDto> registerUser(@Valid @RequestBody RegistrationDto registrationDto){
+        tmsUtil.passwordMatcher(registrationDto);
         ResponseDto responseDto = registrationService.saveUser(registrationDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
@@ -53,7 +63,10 @@ public class RegistrationController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @GetMapping("/{email}")
-    public ResponseEntity<RegistrationDto> getUser(@PathVariable String email){
+    public ResponseEntity<RegistrationDto> getUser(@PathVariable
+                                                       @Email(message = "Email address should be a valid value")
+                                                       @NotEmpty(message = "Email cannot be empty")
+                                                       String email){
         RegistrationDto registrationDto = registrationService.getUserByEmail(email);
         return new ResponseEntity<>(registrationDto, HttpStatus.OK);
     }
@@ -69,8 +82,11 @@ public class RegistrationController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @PutMapping("/{email}")
-    public ResponseEntity<ResponseDto> updaterUser(@RequestBody RegistrationDto registrationDto, @PathVariable String email){
-
+    public ResponseEntity<ResponseDto> updaterUser(@Valid @RequestBody RegistrationDto registrationDto,
+                                                   @PathVariable
+                                                   @Email(message = "Email address should be a valid value")
+                                                   @NotEmpty(message = "Email cannot be empty") String email){
+        tmsUtil.passwordMatcher(registrationDto);
         ResponseDto responseDto = registrationService.updateUser(registrationDto, email);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
@@ -86,7 +102,10 @@ public class RegistrationController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @PostMapping("/validate-username")
-    public ResponseEntity<ResponseDto> validateUserName(@RequestBody String email){
+    public ResponseEntity<ResponseDto> validateUserName(@RequestBody
+                                                            @Email(message = "Email address should be a valid value")
+                                                            @NotEmpty(message = "Email cannot be empty")
+                                                            String email){
         ResponseDto responseDto = registrationService.validateUserName(email);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -102,7 +121,8 @@ public class RegistrationController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @PutMapping("/update-password")
-    public ResponseEntity<ResponseDto> updatePassword(@RequestBody RegistrationDto registrationDto){
+    public ResponseEntity<ResponseDto> updatePassword(@Valid @RequestBody RegistrationDto registrationDto){
+        tmsUtil.passwordMatcher(registrationDto);
         ResponseDto responseDto = registrationService.updatePassword(registrationDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }

@@ -3,7 +3,7 @@ package com.tms.taskmanagementapi.service;
 import com.tms.taskmanagementapi.constants.GlobalConstants;
 import com.tms.taskmanagementapi.dto.ResponseDto;
 import com.tms.taskmanagementapi.dto.TaskDto;
-import com.tms.taskmanagementapi.dto.UserId;
+import com.tms.taskmanagementapi.dto.User;
 import com.tms.taskmanagementapi.entity.Task;
 import com.tms.taskmanagementapi.exception.ResourceNotFoundException;
 import com.tms.taskmanagementapi.mapper.ResponseMapper;
@@ -12,8 +12,6 @@ import com.tms.taskmanagementapi.repository.TaskRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,9 +44,9 @@ public class TaskService {
                 .mapToResponseDto(HttpStatus.OK, GlobalConstants.MESSAGE_200);
     }
 
-    public List<TaskDto> getAllTasks(String status) {
-        log.info(UserId.userId.toString());
-        List<TaskDto> tasks = taskRepository.findAllByUserId(UserId.userId)
+    public List<TaskDto> getAllTasks() {
+        log.info(User.userId.toString());
+        List<TaskDto> tasks = taskRepository.findAllByUserId(User.userId)
                 .stream()
                 .map(task -> taskMapper.mapToTaskDto(task))
                 .collect(Collectors.toList());
@@ -79,13 +77,13 @@ public class TaskService {
     }
 
     public List<TaskDto> searchByName(String searchString) {
-        List<Task> tasks = taskRepository.findAllByUserIdAndNameContaining(UserId.userId, searchString);
+        List<Task> tasks = taskRepository.findAllByUserIdAndNameContaining(User.userId, searchString);
 
         if(tasks.isEmpty()){
             throw new ResourceNotFoundException("There is no Resource found for the give search key "+ searchString);
         }
 
-        return taskRepository.findAllByUserIdAndNameContaining(UserId.userId, searchString)
+        return taskRepository.findAllByUserIdAndNameContaining(User.userId, searchString)
                 .stream()
                 .map(task -> taskMapper.mapToTaskDto(task))
                 .collect(Collectors.toList());

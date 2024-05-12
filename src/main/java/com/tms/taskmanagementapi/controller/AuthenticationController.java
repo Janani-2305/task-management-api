@@ -9,10 +9,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RequestMapping("/api/v1/authentication")
 @Slf4j
+@Validated
 public class AuthenticationController {
 
     @Autowired
@@ -38,7 +41,7 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> authenticateUser(@RequestBody AuthRequest authRequest){
+    public ResponseEntity<AuthResponse> authenticateUser(@Valid @RequestBody AuthRequest authRequest){
         log.info("Entered login api");
         AuthResponse authResponse = authenticationService.authenticateUser(authRequest);
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
@@ -55,7 +58,7 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "500", description = "HTTP STATUS : INTERNAL_SERVER_ERROR",content = @Content)
     })
     @PostMapping("/check-token")
-    public ResponseEntity<AuthResponse> authenticateUser(@RequestBody AuthToken authToken){
+    public ResponseEntity<AuthResponse> authenticateUser(@Valid @RequestBody AuthToken authToken){
         log.info("Entered check-token api");
         AuthResponse authResponse = authenticationService.checkToken(authToken.getToken());
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
