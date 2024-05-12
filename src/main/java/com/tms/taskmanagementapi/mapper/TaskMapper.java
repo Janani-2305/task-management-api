@@ -22,6 +22,7 @@ public class TaskMapper {
         taskDto.setTargetDate(task.getTargetDate());
         taskDto.setCompletedOn(task.getCompletedOn());
         taskDto.setUserId(task.getUserId());
+        taskDto.setId(task.getId());
         return taskDto;
     }
 
@@ -39,6 +40,7 @@ public class TaskMapper {
         }else{
             task.setCompletedOn(null);
         }
+        //task.setCompletedOn(taskDto.getCompletedOn());
         return task;
     }
 

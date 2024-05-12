@@ -14,6 +14,9 @@ import java.util.Date;
 @Schema(name = "Task",description = "Task details")
 public class TaskDto {
 
+    @Schema(description = "Task Id", example = "1")
+    private Long id;
+
     @Schema(description = "Task Name", example = "Home Work 1")
     private String name;
 
@@ -30,7 +33,7 @@ public class TaskDto {
     private String status;
 
     @Schema(description = "Task Completion target date", example = "01/12/2024")
-    private Date targetDate;
+    private String targetDate;
 
     @Schema(description = "Task Completed on date", example = "2024-05-08 09:35:05.540854")
     private LocalDateTime completedOn;

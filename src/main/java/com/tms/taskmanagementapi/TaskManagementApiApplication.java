@@ -4,6 +4,8 @@ import com.tms.taskmanagementapi.entity.Registration;
 import com.tms.taskmanagementapi.entity.Task;
 import com.tms.taskmanagementapi.repository.RegistrationRepository;
 import com.tms.taskmanagementapi.repository.TaskRepository;
+import com.tms.taskmanagementapi.service.ChartService;
+import com.tms.taskmanagementapi.service.TaskService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -44,12 +46,19 @@ public class TaskManagementApiApplication implements CommandLineRunner {
 	@Autowired
 	private RegistrationRepository registrationRepository;
 
+	@Autowired
+	ChartService chartService;
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(TaskManagementApiApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
+
+		chartService.getChartData();
+
 		/*List<Task> tasks = Stream.of(new Task(1L, "Task Name", "Task Description", 5, false, "Pending",null, new Date("31/05/2024")),
 						new Task(2L, "Task Name2", "Task Description2", 1, false, "Pending", null, new Date("31/05/2024")),
 						new Task(3L, "Task Name3", "Task Description3", 10, true, "Completed", null, new Date("31/05/2024")),
