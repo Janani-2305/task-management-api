@@ -1,6 +1,5 @@
 package com.tms.taskmanagementapi.controller;
 
-import com.tms.taskmanagementapi.dto.ChartData;
 import com.tms.taskmanagementapi.dto.ChartDataResponseDto;
 import com.tms.taskmanagementapi.service.ChartService;
 import io.swagger.v3.oas.annotations.Operation;

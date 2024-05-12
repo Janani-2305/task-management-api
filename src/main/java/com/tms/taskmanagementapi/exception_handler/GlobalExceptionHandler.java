@@ -2,6 +2,7 @@ package com.tms.taskmanagementapi.exception_handler;
 
 import com.tms.taskmanagementapi.dto.ErrorResponseDto;
 import com.tms.taskmanagementapi.exception.AuthenticationFailureException;
+import com.tms.taskmanagementapi.exception.InvalidTokenException;
 import com.tms.taskmanagementapi.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthenticationFailureException.class)
     public ResponseEntity<ErrorResponseDto> handleAuthenticationFailureException(AuthenticationFailureException exception, WebRequest webRequest){
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(this.getErrorResponse(exception, webRequest, HttpStatus.UNAUTHORIZED));
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ErrorResponseDto> handleInvalidTokenException(InvalidTokenException exception, WebRequest webRequest){
 
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)

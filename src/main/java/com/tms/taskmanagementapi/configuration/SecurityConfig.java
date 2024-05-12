@@ -31,6 +31,7 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/api/v1/user/register",
             "/api/v1/authentication/login",
+            "/api/v1/authentication/check-token",
             "/api/v1/user/validate-username",
             "/api/v1/user/update-password"
     };

@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,11 +27,13 @@ public class ChartService {
                 .sorted(Comparator.comparing(Task::getCompletedOn).reversed())
                 .limit(15)
                 .map(ChartService::mapToChartData)
-                .collect(Collectors.groupingBy(ChartData::getLabel, TreeMap::new, Collectors.counting()));
+                .collect(Collectors.groupingBy(ChartData::getLabel, LinkedHashMap::new, Collectors.counting()));
 
         log.info(String.valueOf(map));
 
-        return new ChartDataResponseDto(map);
+        log.info(String.valueOf(new ChartDataResponseDto(map.keySet(), map.values())));
+
+        return new ChartDataResponseDto(map.keySet(), map.values());
     }
 
     private static ChartData mapToChartData(Task task){
