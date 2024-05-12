@@ -2,6 +2,7 @@ package com.tms.taskmanagementapi.service;
 
 import com.tms.taskmanagementapi.dto.ChartData;
 import com.tms.taskmanagementapi.dto.ChartDataResponseDto;
+import com.tms.taskmanagementapi.dto.UserId;
 import com.tms.taskmanagementapi.entity.Task;
 import com.tms.taskmanagementapi.repository.TaskRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ public class ChartService {
 
     public ChartDataResponseDto getChartData(){
 
-        Map<String, Long> map = taskRepository.findAll()
+        Map<String, Long> map = taskRepository.findAllByUserId(UserId.userId)
                 .stream()
                 .filter(task -> task.isCompleted())
                 .sorted(Comparator.comparing(Task::getCompletedOn).reversed())

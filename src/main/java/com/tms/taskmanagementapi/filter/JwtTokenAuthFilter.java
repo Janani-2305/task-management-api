@@ -2,6 +2,7 @@ package com.tms.taskmanagementapi.filter;
 
 import com.tms.taskmanagementapi.service.JwtTokenService;
 import com.tms.taskmanagementapi.service.TmsUserDetailsService;
+import com.tms.taskmanagementapi.util.TmsUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +28,9 @@ public class JwtTokenAuthFilter extends OncePerRequestFilter {
     @Autowired
     private TmsUserDetailsService userDetailsService;
 
+    @Autowired
+    private TmsUtil tmsUtil;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("Entered into JwtTokenAuthFilter");
@@ -51,7 +55,7 @@ public class JwtTokenAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
-
+        tmsUtil.setUserId();
         filterChain.doFilter(request, response);
     }
 }

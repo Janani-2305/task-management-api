@@ -1,6 +1,7 @@
 package com.tms.taskmanagementapi.mapper;
 
 import com.tms.taskmanagementapi.dto.TaskDto;
+import com.tms.taskmanagementapi.dto.UserId;
 import com.tms.taskmanagementapi.entity.Task;
 import com.tms.taskmanagementapi.service.TmsUserDetails;
 import org.springframework.security.core.Authentication;
@@ -34,7 +35,7 @@ public class TaskMapper {
         task.setCompleted(taskDto.isCompleted());
         task.setStatus(taskDto.getStatus());
         task.setTargetDate(taskDto.getTargetDate());
-        task.setUserId(getUserDetails().getUserId());
+        task.setUserId(UserId.userId);
         if(taskDto.isCompleted()){
             task.setCompletedOn(LocalDateTime.now());
         }else{
@@ -53,14 +54,9 @@ public class TaskMapper {
         }
         task.setCompleted(taskDto.isCompleted());
         task.setStatus(taskDto.getStatus());
-        task.setUserId(getUserDetails().getUserId());
+        task.setUserId(UserId.userId);
 
         return task;
-    }
-
-    private TmsUserDetails getUserDetails(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (TmsUserDetails) authentication.getPrincipal();
     }
 
 }

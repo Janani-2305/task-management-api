@@ -3,11 +3,13 @@ package com.tms.taskmanagementapi.service;
 import com.tms.taskmanagementapi.constants.GlobalConstants;
 import com.tms.taskmanagementapi.dto.ResponseDto;
 import com.tms.taskmanagementapi.dto.TaskDto;
+import com.tms.taskmanagementapi.dto.UserId;
 import com.tms.taskmanagementapi.entity.Task;
 import com.tms.taskmanagementapi.exception.ResourceNotFoundException;
 import com.tms.taskmanagementapi.mapper.ResponseMapper;
 import com.tms.taskmanagementapi.mapper.TaskMapper;
 import com.tms.taskmanagementapi.repository.TaskRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class TaskService {
 
     @Autowired
@@ -44,8 +47,8 @@ public class TaskService {
     }
 
     public List<TaskDto> getAllTasks(String status) {
-
-        List<TaskDto> tasks = taskRepository.findAll()
+        log.info(UserId.userId.toString());
+        List<TaskDto> tasks = taskRepository.findAllByUserId(UserId.userId)
                 .stream()
                 .map(task -> taskMapper.mapToTaskDto(task))
                 .collect(Collectors.toList());
@@ -76,13 +79,13 @@ public class TaskService {
     }
 
     public List<TaskDto> searchByName(String searchString) {
-        List<Task> tasks = taskRepository.findByNameContaining(searchString);
+        List<Task> tasks = taskRepository.findAllByUserIdAndNameContaining(UserId.userId, searchString);
 
         if(tasks.isEmpty()){
             throw new ResourceNotFoundException("There is no Resource found for the give search key "+ searchString);
         }
 
-        return taskRepository.findByNameContaining(searchString)
+        return taskRepository.findAllByUserIdAndNameContaining(UserId.userId, searchString)
                 .stream()
                 .map(task -> taskMapper.mapToTaskDto(task))
                 .collect(Collectors.toList());
